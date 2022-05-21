@@ -51,7 +51,7 @@ function initNolly() {
 		li.innerHTML = `
 		<span class="movie-item">${movie.title}</span>
 		<span class="movie-item">KES ${movie.price}</span>
-		<span class="movie-item">KES ${movie.likes}</span>
+		<span class="movie-item">${movie.likes}</span>
 		<button name="likeButton"><i class="fa fa-thumbs-up"></i></button>`;
 		li.classList.add('movie-list-item');
 		ul.appendChild(li);
@@ -65,8 +65,22 @@ function handleLike(e){
 		const movieIndex=item.getAttribute('id');
 		let movie=movieList[movieIndex];
 		movieList[movieIndex].likes=movie.likes+1;
-		
 		document.querySelector('ul').innerHTML = '';
+		updatePricing(movie,movieIndex);
+		movieList.sort((a, b) => a.likes - b.likes);
+		movieList.reverse();
 		initNolly();
+	}
+}
+
+function updatePricing(movie,movieIndex){
+	if(movie.likes<=1){
+		movieList[movieIndex].price=movie.price+100;
+	}else if(movie.likes<=5){
+		movieList[movieIndex].price=movie.price+200;
+	}else if(movie.likes<=10){
+		movieList[movieIndex].price=movie.price+300;
+	}else{
+		movieList[movieIndex].price=movie.price+400;
 	}
 }
